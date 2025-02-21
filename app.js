@@ -10,8 +10,8 @@ app.use(express.static('dist'))
 
 // eslint-disable-next-line no-unused-vars
 app.get('/health', (req, res) => {
-  throw('error...')
-  // res.send('ok')
+  //throw('error...')
+  res.send('ok')
 })
 
 app.listen(PORT, () => {

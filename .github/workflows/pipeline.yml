@@ -34,27 +34,6 @@ jobs:
       - name: Deploy to render
         if: ${{ github.event_name == 'push' }}
         run: curl https://api.render.com/deploy/srv-${{secrets.RENDER_SERVICE_ID}}?key=${{secrets.RENDER_API_KEY}}
-  tag_release:
-    needs:
-      - simple_deployment_pipeline
-    runs-on: ubuntu-22.04
-    steps:
-      - uses: actions/checkout@v4
-      - name: This commit message
-        run: echo "${{ github.event.commits[0].message }}"
-      - name: "Have this commit #skip in his name?"
-        run: echo "${{ contains(github.event.commits[0].message , '#skip' )}}"
-      - name: Bump version and push tag
-        if: ${{ github.event_name == 'push' && !contains(github.event.commits[0].message , '#skip' ) }}
-        uses: anothrNick/github-tag-action@1.71.0
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          DEFAULT_BUMP: patch
-  send_notification:
-    needs:
-      - tag_release
-    runs-on: ubuntu-22.04
-    steps:
       - name: Send success notification
         if: ${{ success() && github.event_name == 'push' }}
         uses: stegzilla/discord-notify@v2
@@ -97,3 +76,21 @@ jobs:
           avatar_url: "https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/9c870380-219a-4060-914d-9929082d5056/dfghzab-31509847-d454-4602-ac9b-0b1ad48ba9b7.png/v1/fill/w_600,h_600,q_80,strp/build_chan_by_lupinmk_dfghzab-fullview.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9NjAwIiwicGF0aCI6IlwvZlwvOWM4NzAzODAtMjE5YS00MDYwLTkxNGQtOTkyOTA4MmQ1MDU2XC9kZmdoemFiLTMxNTA5ODQ3LWQ0NTQtNDYwMi1hYzliLTBiMWFkNDhiYTliNy5wbmciLCJ3aWR0aCI6Ijw9NjAwIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmltYWdlLm9wZXJhdGlvbnMiXX0.PsmFPEaVbfDMhXGlNbGe7Jmku2lwgnw2blRzAxsKL-U"
           username: BuildNotifier-chan
           colour: "#F02E23"
+
+  tag_release:
+    needs:
+      - simple_deployment_pipeline
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+      - name: This commit message
+        run: echo "${{ github.event.commits[0].message }}"
+      - name: "Have this commit #skip in his name?"
+        run: echo "${{ contains(github.event.commits[0].message , '#skip' )}}"
+      - name: Bump version and push tag
+        if: ${{ github.event_name == 'push' && !contains(github.event.commits[0].message , '#skip' ) }}
+        uses: anothrNick/github-tag-action@1.71.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
+

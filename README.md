@@ -1,6 +1,6 @@
 # Full Stack open CI/CD
 
-# This is the ling to my repository with my own pipeline https://github.com/ErickFCS/MiniBlogListApp
+# This is the link to my repository with my own pipeline https://github.com/ErickFCS/MiniBlogListApp
 
 This repository is used for the CI/CD module of the Full stack open course
 
